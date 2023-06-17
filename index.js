@@ -11,7 +11,7 @@ const connectDb = require("./config/dbConnection");
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-console.log("Inside App")
+// console.log("Inside App")
 connectDb();
 
 app.use(express.json());
