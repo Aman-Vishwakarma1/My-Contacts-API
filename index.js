@@ -5,16 +5,20 @@ ACCESS_TOKEN = Your token secret
 */
 
 const express = require("express");
+const punycode = require("punycode/");
 const { errorHandler } = require("./middleware/errorHandler");
 const dotenv = require("dotenv").config();
 const connectDb = require("./config/dbConnection");
+const swaggerui = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 // console.log("Inside App")
 connectDb();
 
 app.use(express.json());
+app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerDocument));
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/user", require("./routes/userRoutes.js"));
 app.get("/", (req, res) => {
@@ -23,5 +27,5 @@ app.get("/", (req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`https://localhost:${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });
