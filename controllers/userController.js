@@ -49,30 +49,38 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 //@access : public
 exports.loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email, password);
   //Checking that field are not empty.
   if (!email || !password) {
     res.status(404);
     throw new Error("All fields are mandatory");
   }
   const user = await User.findOne({ email });
-  if(!user){
+  if (!user) {
     res.status(404);
     throw new Error("User not found, Please register first");
   }
   console.log(user);
-    if(user && (await bcrypt.compare(password, user.password))){
-      const accessToken = jwt.sign({
+  if (user && (await bcrypt.compare(password, user.password))) {
+    const accessToken = jwt.sign(
+      {
         id: user.id,
         name: user.name,
-        email: user.email
-      },process.env.ACCESS_TOKEN,
-      {expiresIn: "1d"});
+        email: user.email,
+      },
+      process.env.ACCESS_TOKEN,
+      { expiresIn: "1d" }
+    );
 
-      res.status(200).json({ message: "user login successfull", Token: accessToken });
-    }else{
-      res.status(401);
-      throw new Error("oops!, Email or Password does not match")
-    };
+    console.log("access token: ", accessToken);
+
+    res
+      .status(200)
+      .json({ message: "user login successfull", Token: accessToken });
+  } else {
+    res.status(401);
+    throw new Error("oops!, Email or Password does not match");
+  }
 });
 
 //---------------------------------------CURRENT USER CONTROLLER------------------------------------------//
