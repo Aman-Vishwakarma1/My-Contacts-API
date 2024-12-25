@@ -14,6 +14,8 @@ const swaggerDocument = require("./swagger-output.json");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const swaggerUICss =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css";
 // console.log("Inside App")
 connectDb();
 const corsOptions = {
@@ -25,7 +27,15 @@ const corsOptions = {
 // Use CORS middleware with specified options
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/api-docs", swaggerui.serve, swaggerui.setup(swaggerDocument));
+app.use(
+  "/api-docs",
+  swaggerui.serve,
+  swaggerui.setup(swaggerDocument, {
+    customCss:
+      ".swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }",
+    customCssUrl: swaggerUICss,
+  })
+);
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use("/api/user", require("./routes/userRoutes.js"));
 app.get("/", (req, res) => {
