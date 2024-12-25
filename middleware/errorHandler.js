@@ -18,22 +18,22 @@ exports.errorHandler = (err, req, res, next) => {
         stackTrace: err.stack,
       });
       break;
-      case constants.FORBIDDEN:
-        res.json({
-          titel: "Forbidden",
-          message: err.message,
-          stackTrace: err.stack,
-        });
-        break;
-        case constants.NOT_FOUND:
-          res.json({
-            titel: "Not Found",
-            message: err.message,
-            stackTrace: err.stack,
-          });
-          break;
+    case constants.FORBIDDEN:
+      res.json({
+        titel: "Forbidden",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
+    case constants.NOT_FOUND:
+      res.json({
+        titel: "Not Found",
+        message: err.message,
+        stackTrace: err.stack,
+      });
+      break;
     default:
-      console.log("No errors, all good :) ");
+      // console.log("No errors, all good :) ");
       break;
   }
 };

@@ -49,7 +49,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 //@access : public
 exports.loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(email, password);
+  // console.log(email, password);
   //Checking that field are not empty.
   if (!email || !password) {
     res.status(404);
@@ -60,7 +60,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     res.status(404);
     throw new Error("User not found, Please register first");
   }
-  console.log(user);
+  // console.log(user);
   if (user && (await bcrypt.compare(password, user.password))) {
     const accessToken = jwt.sign(
       {
@@ -72,7 +72,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       { expiresIn: "1d" }
     );
 
-    console.log("access token: ", accessToken);
+    // console.log("access token: ", accessToken);
 
     res
       .status(200)

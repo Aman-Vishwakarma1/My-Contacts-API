@@ -16,13 +16,13 @@ exports.getContacts = asyncHandler(async (req, res, next) => {
 //@route : POST /api/contact
 //@access : private
 exports.createContacts = asyncHandler(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
     res.status(400);
     throw new Error("All fields are Mandatory!");
   }
-  
+
   // const registeredContactPhone = await Contact.findOne({phone});
   // if(registeredContactPhone){
   //   res.status(403);
@@ -32,7 +32,7 @@ exports.createContacts = asyncHandler(async (req, res, next) => {
     name,
     email,
     phone,
-    user_id: req.user.id
+    user_id: req.user.id,
   });
   res.status(201).json(contact);
 });
@@ -48,7 +48,7 @@ exports.getContactsId = asyncHandler(async (req, res, next) => {
     throw new Error("No Contact Found");
   }
   res.status(200).json(contact);
-  console.log(contact);
+  // console.log(contact);
 });
 
 //---------------------------------------UPDATE A CONTACT BY ID CONTROLLER-----------------------------------//
@@ -61,17 +61,17 @@ exports.updateContacts = asyncHandler(async (req, res, next) => {
     res.status(404);
     throw new Error("No Contact Found");
   }
-  console.log(contact.user_id.toString());
-  if(contact.user_id.toString() !== req.user.id){
+  // console.log(contact.user_id.toString());
+  if (contact.user_id.toString() !== req.user.id) {
     res.status(403);
-    throw new Error("Not have permission to do this operation")
-  };
+    throw new Error("Not have permission to do this operation");
+  }
   const updatedContact = await Contact.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
   );
-  console.log(updatedContact);
+  // console.log(updatedContact);
   res.status(200).json(updatedContact);
 });
 // exports.updateContacts = asyncHandler(async (req, res, next) => {
